@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_25_132640) do
+ActiveRecord::Schema.define(version: 2019_09_25_175334) do
 
   create_table "interactions", force: :cascade do |t|
     t.integer "giver_id", null: false
@@ -20,6 +20,16 @@ ActiveRecord::Schema.define(version: 2019_09_25_132640) do
     t.boolean "like", default: false
     t.index ["giver_id"], name: "index_interactions_on_giver_id"
     t.index ["receiver_id"], name: "index_interactions_on_receiver_id"
+  end
+
+  create_table "private_messages", force: :cascade do |t|
+    t.integer "sender_id", null: false
+    t.integer "receiver_id", null: false
+    t.string "content"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["receiver_id"], name: "index_private_messages_on_receiver_id"
+    t.index ["sender_id"], name: "index_private_messages_on_sender_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -39,4 +49,6 @@ ActiveRecord::Schema.define(version: 2019_09_25_132640) do
 
   add_foreign_key "interactions", "users", column: "giver_id"
   add_foreign_key "interactions", "users", column: "receiver_id"
+  add_foreign_key "private_messages", "users", column: "receiver_id"
+  add_foreign_key "private_messages", "users", column: "sender_id"
 end
